@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react'
+import Axios from "axios";
+
+const apiKey = "38a6fdde";
 
 function App() {
+
+  useEffect(()=>{
+    Axios.get(`http://www.omdbapi.com/?i=${"tt0248667"}&apikey=${apiKey}`).then((res) => {
+      console.log(res.data)
+    })
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      App
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
+
