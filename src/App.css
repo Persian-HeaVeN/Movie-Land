@@ -1,38 +1,116 @@
-.App {
-  text-align: center;
+
+* {
+    transition: 0.2s;
+    font-family: cursive, 'Times New Roman', Times, serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.the-nav {
+    position: relative;
+    height: 240px;
+    background-color: black;
+    overflow: hidden;
+    box-shadow: 0 0 10px 5px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.mouse-pointer:hover {
+    cursor: pointer;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.no-select {
+    user-select: none;
 }
 
-.App-link {
-  color: #61dafb;
+.nav-bg {
+    position: absolute;
+    z-index: 0;
+    opacity: 0.3;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.nav-bg figure {
+    width: 140px;
+    margin: 0;
+    margin-top: 20px;
+}
+
+.nav-bg img {
+    height: 200px;
+    border-radius: 15px;
+}
+
+.nav-cover {
+    position: absolute;
+    color: white;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    text-shadow: 5px 5px 2px #000000;
+}
+
+.hover-anim {
+    transition: linear transform 0.2s;
+}
+
+.hover-anim:hover {
+    transform: scale(1.1);
+}
+
+.hover-anim:active {
+    transform: scale(0.9);
+}
+
+.search-bar {
+    background-color: black;
+    border-color: white;
+    border-radius: 10px;
+    border: 2px solid;
+    box-shadow: 0 0 10px 2px white;
+}
+
+.search-bar input[type="search"] {
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    border: 0;
+}
+
+.search-bar input[type="search"]:focus {
+    box-shadow: none;
+}
+
+.search-bar input[type="search"]::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-btn {
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    border: 0;
+    border-left: 2px white solid;
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-right: 10px;
+    margin: 0;
+    height: 100%;
+}
+
+.search-btn:hover {
+    background-color: white;
+    color: black;
+}
+
+.search-btn:active {
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+}
+
+@media (min-width: 768px) {
+    .the-nav {
+        height: 300px;
+    }
+    .nav-bg figure {
+        width: 200px;
+    }
+    .nav-bg img {
+        height: 260px;
+    }
 }
