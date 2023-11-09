@@ -4,6 +4,10 @@
     font-family: cursive, 'Times New Roman', Times, serif;
 }
 
+body {
+    overflow-x: hidden;
+}
+
 .the-nav {
     position: relative;
     height: 240px;
@@ -63,8 +67,22 @@
     border-color: white;
     border-radius: 10px;
     border: 2px solid;
-    box-shadow: 0 0 10px 2px white;
+    animation-name: flashing;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
 }
+
+@keyframes flashing {
+    0% {
+        box-shadow: 0 0 3px 1px white;
+    }
+    50% {
+        box-shadow: 0 0 10px 5px white;
+    }
+    100% {
+        box-shadow: 0 0 3px 1px white;
+    }
+  }
 
 .search-bar input[type="search"] {
     background-color: rgba(0, 0, 0, 0);
@@ -101,6 +119,10 @@
 .search-btn:active {
     background-color: rgba(0, 0, 0, 0);
     color: white;
+}
+
+.no-data-icon {
+    margin-top: calc((40vh) / 2);
 }
 
 @media (min-width: 768px) {

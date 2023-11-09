@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { apiKey } from '../App';
 import OwlCarousel from 'react-owl-carousel';
 import Axios from 'axios';
 import { faListUl as listIcon, faSearch as searchIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useDispatch } from 'react-redux';
+import { clearList, setList, setResult } from './store';
 
 export const crouselOptions = {
     margin: 20,
@@ -41,42 +43,81 @@ function Nav() {
         }) */
       }, [])
 
-      
+      const searchRef = useRef();
+      const dispatch = useDispatch();
+
+      function searchSubmit(event) {
+        event.preventDefault();
+        Axios.get(`http://www.omdbapi.com/?s=${searchRef.current.value}&apikey=${apiKey}`).then((res) => {
+            if (res.data.Response === "True") {
+                dispatch(setList({list: res.data.Search}));
+                dispatch(setResult({result: true}));
+            } else {
+                dispatch(clearList());
+                dispatch(setResult({result: false}));
+            }
+        })
+        
+      }
 
     return (
         <React.Fragment>
             
             <div className="the-nav">
             
+                <div className="nav-cover d-md-none m-0">
+
+                    <div className="row align-items-center h-75 m-0">
+                        <div className="col-12 d-inline-flex justify-content-center pt-5">
+                            <h1 className="text-start ms-lg-5 no-select">Looking for a movie ?</h1>
+                        </div>
+                        <div className="col-12 d-inline-flex justify-content-center pb-3">
+                            <div className="d-inline-flex align-items-center mouse-pointer hover-anim me-lg-5">
+                                <h3 className="me-3" style={{width:"fit-content"}}>Watchlist</h3>
+                                <FontAwesomeIcon style={{width:"fit-content", fontSize:"1.5rem"}} icon={listIcon} />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="d-flex h-25 align-items-center justify-content-center pb-2">
+                        <form onSubmit={searchSubmit} className="d-flex h-75 w-75 search-bar align-items-center">
+                            <FontAwesomeIcon className='ms-2' style={{fontSize:"1.3rem"}} icon={searchIcon} />
+                            <input ref={searchRef} className="form-control me-2" type="search" placeholder="Search a movie" aria-label="Search"/>
+                            <button className="search-btn">Search</button>
+                        </form>
+                    </div>
+
+                </div>
+
                 <div className="nav-cover row d-none d-md-block m-0">
+
                     <div className="row align-items-end h-50 m-0">
                         <div className="col-6">
                             <h1 className="text-start ms-lg-5 no-select">Looking for a movie ?</h1>
                         </div>
-
                         <div className="col-6 d-inline-flex justify-content-end">
                             <div className="d-inline-flex align-items-center mouse-pointer hover-anim me-lg-5">
                                 <h3 className="me-3" style={{width:"fit-content"}}>Watchlist</h3>
                                 <FontAwesomeIcon style={{width:"fit-content", fontSize:"1.5rem"}} icon={listIcon} />
                             </div>
                         </div>
-                        
                     </div>
 
                     <div className="d-flex h-50 align-items-center justify-content-center">
-                        <div class="d-flex h-25 w-50 search-bar align-items-center">
+                        <form onSubmit={searchSubmit} className="d-flex h-25 w-50 search-bar align-items-center">
                             <FontAwesomeIcon className='ms-2' style={{fontSize:"1.3rem"}} icon={searchIcon} />
-                            <input class="form-control me-2" type="search" placeholder="Search a movie" aria-label="Search"/>
+                            <input ref={searchRef} className="form-control me-2" type="search" placeholder="Search a movie" aria-label="Search"/>
                             <button className="search-btn">Search</button>
-                        </div>
+                        </form>
                     </div>
+
                 </div>
 
                 <div className='nav-bg'>
                     <OwlCarousel className="owl-theme" {...crouselOptions} >
                         {movieList.map((data, index) => {
                             return (
-                                <figure>
+                                <figure key={index}>
                                     <img src={data.Poster} />
                                 </figure>
                             )

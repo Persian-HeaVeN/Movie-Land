@@ -7,17 +7,21 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import Home from './pages/home';
 import Nav from './components/nav';
+import { Provider } from 'react-redux';
+import { store } from './components/store';
 
 export const apiKey = "38a6fdde";
 
 function App() {
   return (
-    <Router>
-      <Nav />
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <Nav />
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </Router>
+    </Provider>
   )
 }
 
