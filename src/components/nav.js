@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { apiKey } from '../App';
 import OwlCarousel from 'react-owl-carousel';
 import Axios from 'axios';
-import { faListUl as listIcon, faSearch as searchIcon } from '@fortawesome/free-solid-svg-icons';
+import { faListUl as listIcon, faSearch as searchIcon, faHome as homeIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch } from 'react-redux';
 import { clearList, setList, setResult } from './store';
+import { useNavigate } from 'react-router-dom';
 
 export const crouselOptions = {
     margin: 20,
@@ -44,20 +45,31 @@ function Nav() {
       }, [])
 
       const searchRef = useRef();
+      const searchRefLittle = useRef();
       const dispatch = useDispatch();
+      const navigateTo = useNavigate();
 
       function searchSubmit(event) {
         event.preventDefault();
-        Axios.get(`http://www.omdbapi.com/?s=${searchRef.current.value}&apikey=${apiKey}`).then((res) => {
+        let nowRef = NaN;
+        if ( searchRefLittle.current.value.length > 0 ) {
+            nowRef = searchRefLittle;
+        } else if ( searchRef.current.value.length > 0 )  {
+            nowRef = searchRef;
+        } else {
+            dispatch(setList({list: [], page:1, totalResult: 0, value: ""}));
+            dispatch(setResult({result: true}));
+            return false
+        }
+        Axios.get(`http://www.omdbapi.com/?s=${nowRef.current.value}&apikey=${apiKey}`).then((res) => {
             if (res.data.Response === "True") {
-                dispatch(setList({list: res.data.Search}));
+                dispatch(setList({list: res.data.Search, page:1, totalResult: res.data.totalResults, value: nowRef.current.value}));
                 dispatch(setResult({result: true}));
             } else {
                 dispatch(clearList());
                 dispatch(setResult({result: false}));
             }
         })
-        
       }
 
     return (
@@ -72,6 +84,10 @@ function Nav() {
                             <h1 className="text-start ms-lg-5 no-select">Looking for a movie ?</h1>
                         </div>
                         <div className="col-12 d-inline-flex justify-content-center pb-3">
+                            <div onClick={()=>{navigateTo("/")}} style={{direction:"rtl"}} className="d-inline-flex me-5 align-items-center mouse-pointer hover-anim me-lg-5">
+                                <FontAwesomeIcon style={{width:"fit-content", fontSize:"1.5rem"}} icon={homeIcon} />
+                                <h3 className="me-3" style={{width:"fit-content"}}>Main</h3>
+                            </div>
                             <div className="d-inline-flex align-items-center mouse-pointer hover-anim me-lg-5">
                                 <h3 className="me-3" style={{width:"fit-content"}}>Watchlist</h3>
                                 <FontAwesomeIcon style={{width:"fit-content", fontSize:"1.5rem"}} icon={listIcon} />
@@ -93,12 +109,16 @@ function Nav() {
 
                     <div className="row align-items-end h-50 m-0">
                         <div className="col-6">
-                            <h1 className="text-start ms-lg-5 no-select">Looking for a movie ?</h1>
+                            <h1 className="text-start pb-2 ms-lg-5 no-select">Looking for a movie ?</h1>
                         </div>
-                        <div className="col-6 d-inline-flex justify-content-end">
+                        <div className="col-6 d-grid justify-content-end">
                             <div className="d-inline-flex align-items-center mouse-pointer hover-anim me-lg-5">
                                 <h3 className="me-3" style={{width:"fit-content"}}>Watchlist</h3>
                                 <FontAwesomeIcon style={{width:"fit-content", fontSize:"1.5rem"}} icon={listIcon} />
+                            </div>
+                            <div onClick={()=>{navigateTo("/")}} style={{direction:"rtl"}} className="d-inline-flex align-items-center mouse-pointer hover-anim me-lg-5">
+                                <FontAwesomeIcon style={{width:"fit-content", fontSize:"1.5rem"}} icon={homeIcon} />
+                                <h3 className="me-3" style={{width:"fit-content"}}>Main</h3>
                             </div>
                         </div>
                     </div>
@@ -106,7 +126,7 @@ function Nav() {
                     <div className="d-flex h-50 align-items-center justify-content-center">
                         <form onSubmit={searchSubmit} className="d-flex h-25 w-50 search-bar align-items-center">
                             <FontAwesomeIcon className='ms-2' style={{fontSize:"1.3rem"}} icon={searchIcon} />
-                            <input ref={searchRef} className="form-control me-2" type="search" placeholder="Search a movie" aria-label="Search"/>
+                            <input ref={searchRefLittle} className="form-control me-2" type="search" placeholder="Search a movie" aria-label="Search"/>
                             <button className="search-btn">Search</button>
                         </form>
                     </div>

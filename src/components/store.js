@@ -4,10 +4,13 @@ import { createSlice, configureStore } from "@reduxjs/toolkit";
 
 const searchReducer = createSlice({
     name: "search",
-    initialState: {list: [], haveResult: true},
+    initialState: {list: [], page:1, totalResult:0, haveResult: true, value: ""},
     reducers: {
         setList: (state, action) => {
+            state.value = action.payload.value;
             state.list = action.payload.list;
+            state.page = action.payload.page;
+            state.totalResult = action.payload.totalResult;
         },
         clearList: (state, action) => {
             state.list = [];
