@@ -15,46 +15,34 @@ function Home() {
     const dispatch = useDispatch();
     const [detailModal, setDetailModal] = useState({show: false});
 
-    function CustomModal(props) {
-        
+    const controller = new AbortController();
+
+    function showMovieModal(imdbID) {
+
+        document.querySelector("#loader-modal").style.display = "flex"
+
+        Axios.get(`http://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`, {signal: controller.signal}).then((res) => {
+            setDetailModal({...detailModal, show:true, datas: res.data})
+            document.querySelector("#loader-modal").style.display = "none"
+            document.querySelector("#cancel-btn").style.display = "none";
+        }).catch(function (thrown) {
+            console.log(thrown.message);
+        });
+
+        setTimeout(() => {
+            if ( document.querySelector("#loader-modal").style.display === "flex" ) {
+                document.querySelector("#cancel-btn").style.display = "block"
+            }
+        }, 5000);
+
     }
-
-    function getMovieDetail(imdbID) {
-        Axios.get(`http://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`).then((res) => {
-            console.log(res.data);
-        })
-    }
-
-    //getMovieDetail("tt5026038")
-
-    /*
-        Actors: "Cauã Reymond, Humberto Martins, Sophie Charlotte"
-        Awards: "1 win & 16 nominations"
-        BoxOffice: "N/A"
-        Country: "Brazil"
-        DVD: "N/A"
-        Director: "Homero Olivetto"
-        Genre: "Action, Adventure, Drama"
-        Language: "Portuguese"
-        Metascore: "N/A"
-        Plot: "In an arid and poor region of Brazil, bikers search for a miracle to make it rain and save the land, risking their lives."
-        Poster: "https://m.media-amazon.com/images/M/MV5BMjU3MTA0NzcwMV5BMl5BanBnXkFtZTgwNzA1MzYwNzE@._V1_SX300.jpg"
-        Production: "N/A"
-        Rated: "N/A"
-        Ratings:  [{…}]
-        Released: "21 Jan 2016"
-        Response: "True"
-        Runtime: "87 min"
-        Title: "Reza a Lenda"
-        Type: "movie"
-        Website: "N/A"
-        Writer: "Homero Olivetto, Patrícia Andrade, Newton Cannito"
-        Year: "2016"
-        imdbID: "tt5026038"
-        imdbRating: "5.3"
-        imdbVotes: "595"
-    */
     
+    function cancelRequest() {
+        controller.abort();
+        document.querySelector("#loader-modal").style.display = "none";
+        document.querySelector("#cancel-btn").style.display = "none";
+    }
+
     function pageChange(newPage) {
         Axios.get(`http://www.omdbapi.com/?s=${listSelector.value}&apikey=${apiKey}&page=${parseInt(newPage)}`).then((res) => {
             dispatch(setList({page: parseInt(newPage), value: listSelector.value, list: res.data.Search, totalResult: res.data.totalResults}));
@@ -127,28 +115,75 @@ function Home() {
         }
     }
 
+    /*
+        Actors: "Cauã Reymond, Humberto Martins, Sophie Charlotte"
+        Awards: "1 win & 16 nominations"
+        BoxOffice: "N/A"
+        Country: "Brazil"
+        DVD: "N/A"
+        Director: "Homero Olivetto"
+        Genre: "Action, Adventure, Drama"
+        Language: "Portuguese"
+        Metascore: "N/A"
+        Plot: "In an arid and poor region of Brazil, bikers search for a miracle to make it rain and save the land, risking their lives."
+        Poster: "https://m.media-amazon.com/images/M/MV5BMjU3MTA0NzcwMV5BMl5BanBnXkFtZTgwNzA1MzYwNzE@._V1_SX300.jpg"
+        Production: "N/A"
+        Rated: "N/A"
+        Ratings:  [{…}]
+        Released: "21 Jan 2016"
+        Response: "True"
+        Runtime: "87 min"
+        Title: "Reza a Lenda"
+        Type: "movie"
+        Website: "N/A"
+        Writer: "Homero Olivetto, Patrícia Andrade, Newton Cannito"
+        Year: "2016"
+        imdbID: "tt5026038"
+        imdbRating: "5.3"
+        imdbVotes: "595"
+    */
+
   return (
     <React.Fragment>
 
-        <Modal size="xl" aria-labelledby="contained-modal-title-vcenter" centered show={detailModal.show} onHide={() => {setDetailModal({...detailModal, show:false})}} backdrop="static">
+        <div id="loader-modal" className="loading-modal justify-content-center align-items-center">
+            <div className="d-grid gap-3">
+                <span className="custom-spiner mx-auto"></span>
+                <button onClick={cancelRequest} id="cancel-btn">Cancel</button>
+            </div>
+        </div>
+
+        {detailModal.datas && <Modal size="xl" aria-labelledby="contained-modal-title-vcenter" centered show={detailModal.show} onHide={() => {setDetailModal({show:false})}} backdrop="static">
             <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">
-                Modal heading
+                <Modal.Title>
+                    {detailModal.datas.Title}
                 </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-                <h4>Centered Modal</h4>
-                <p>
-                Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-                dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-                consectetur ac, vestibulum at eros.Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-                dapibus ac facilisis in.
-                </p>
+            <Modal.Body className="d-grid d-lg-flex align-items-center">
+                <img className="detail-img" src={detailModal.datas.Poster} />
+                <div className="detail-texts ">
+                    <div style={{float:"right", lineHeight:"0"}}>
+                        <p className="text-center" style={{color:"red"}}> <big>{detailModal.datas.imdbRating}</big> / <small>10</small> </p>
+                        <p style={{borderBottom:"1px solid #cccccc"}}></p>
+                        <p>{detailModal.datas.imdbVotes} Votes</p>
+                        <p style={{paddingTop:"5px", textAlign:"center"}}><strong>IMDB</strong></p>
+                    </div>
+                    <p> <strong>Country:</strong> {detailModal.datas.Country} </p>
+                    <p> <strong>Language:</strong> {detailModal.datas.Language} </p>
+                    <p> <strong>Director:</strong> {detailModal.datas.Director} </p>
+                    <p> <strong>Release date:</strong> {detailModal.datas.Released} </p>
+                    <p> <strong>Time:</strong> {detailModal.datas.Runtime} </p>
+                    <p> <strong>Genre:</strong> {detailModal.datas.Genre} </p>
+                    <p> <strong>BoxOffice:</strong> {detailModal.datas.BoxOffice} </p>
+                    <p> <strong>Actors:</strong> {detailModal.datas.Actors} </p>
+                    <p> <strong>Plot:</strong> {detailModal.datas.Plot}</p>
+                </div>
+                
             </Modal.Body>
             <Modal.Footer>
                 
             </Modal.Footer>
-        </Modal>
+        </Modal>}
 
         <div className="fulid-container pt-5 px-5" style={{backgroundColor:"#cccccc"}}>
 
@@ -169,9 +204,8 @@ function Home() {
                                     <p className="card-text" style={{width:"fit-content", float:"left"}}>{data.Year}</p>
                                     <p style={{width:"fit-content", float:"right"}}>{data.Type}</p>
                                     <div className="clearfix"></div>
-                                    <button className="detail-btn">See full details</button>
+                                    <button onClick={()=> {showMovieModal(data.imdbID)}} className="detail-btn">See full details</button>
                                 </div>
-                                {/* <p>imdbID: {data.imdbID}</p> */}
                             </div>
                         )
                     })}
