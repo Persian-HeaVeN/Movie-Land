@@ -29,7 +29,7 @@ export function Favorites() {
 
         document.querySelector("#loader-modal").style.display = "flex"
 
-        Axios.get(`http://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`, {signal: controller.signal}).then((res) => {
+        Axios.get(`https://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`, {signal: controller.signal}).then((res) => {
             setDetailModal({...detailModal, show:true, datas: res.data})
             document.querySelector("#loader-modal").style.display = "none"
             document.querySelector("#cancel-btn").style.display = "none";

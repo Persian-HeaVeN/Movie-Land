@@ -24,24 +24,19 @@ export const crouselOptions = {
 
 function Nav() {
 
-    const [movieList, setMovieList] = useState([
-        {Poster: 'https://m.media-amazon.com/images/M/MV5BMjA5NzUwODExM15BMl5BanBnXkFtZTgwNjM0MzE4NjE@._V1_SX300.jpg'},
-        {Poster: "https://m.media-amazon.com/images/M/MV5BODJiNmU0YzgtMGU1MS00M2YzLWI1NDctOGQwYWRiODZkM2YwXkEyXkFqcGdeQXVyNjc5NjEzNA@@._V1_SX300.jpg"},
-        {Poster: "https://m.media-amazon.com/images/M/MV5BZmQ3Mzg3YjgtNTA1Zi00ODgyLTkyZGUtYTE5NDA5ZmI4NjI1L2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTA0MjU0Ng@@._V1_SX300.jpg"},
-        {Poster: 'https://m.media-amazon.com/images/M/MV5BMTU0NDc5NjgzNl5BMl5BanBnXkFtZTcwNzc0NDIzMw@@._V1_SX300.jpg'},
-        {Poster: 'https://m.media-amazon.com/images/M/MV5BZDg0MWNmNjktMGEwZC00ZDlmLWI1MTUtMDBmNjQzMWM2NjBjXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg'},
-        {Poster: 'https://m.media-amazon.com/images/M/MV5BZTk5YmEwOTMtZjIzOC00MjFhLWFhN2ItNDgzZDhhYjVjOWRjXkEyXkFqcGdeQXVyNDk3NzU2MTQ@._V1_SX300.jpg'},
-        {Poster: 'https://m.media-amazon.com/images/M/MV5BMTJhYjI1N2ItM2E4MC00ZmYzLTk2YzYtNTE5YTM1MDU0NjRiXkEyXkFqcGdeQXVyMTMxNjYyMTgw._V1_SX300.jpg'},
-        {Poster: "https://m.media-amazon.com/images/M/MV5BNjY3NjE3YTgtMWVmMS00YmQ0LWIxMzMtMmEyM2VlZTc0M2M0XkEyXkFqcGdeQXVyNjczMzgwMDg@._V1_SX300.jpg"},
-        {Poster: "https://m.media-amazon.com/images/M/MV5BMGZkNjMxYWItYzRjZC00MzA2LWE0YWYtYjIzMmU2MTJiNmEyXkEyXkFqcGdeQXVyMTA0MjU0Ng@@._V1_SX300.jpg"},
-        {Poster: 'https://m.media-amazon.com/images/M/MV5BMTg4OTk0NDc3MV5BMl5BanBnXkFtZTcwOTU0ODc0MQ@@._V1_SX300.jpg'},
-    ]);
-    
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+      }
+
+    const [movieList, setMovieList] = useState([]);
+
+    const randomNames = ["grow", "holiday", "hacker", "day", "night", "movie"]
+
     useEffect(()=>{
-        /* Axios.get(`http://www.omdbapi.com/?s=${"ali"}&apikey=${apiKey}`).then((res) => {
+         Axios.get(`https://www.omdbapi.com/?s=${randomNames[getRandomInt(5)]}&apikey=${apiKey}`).then((res) => {
             setMovieList(res.data.Search);
             console.log(res.data.Search);
-        }) */
+        })
       }, [])
 
       const searchRef = useRef();
@@ -61,7 +56,7 @@ function Nav() {
             dispatch(setResult({result: true}));
             return false
         }
-        Axios.get(`http://www.omdbapi.com/?s=${nowRef.current.value}&apikey=${apiKey}`).then((res) => {
+        Axios.get(`https://www.omdbapi.com/?s=${nowRef.current.value}&apikey=${apiKey}`).then((res) => {
             if (res.data.Response === "True") {
                 dispatch(setList({list: res.data.Search, page:1, totalResult: res.data.totalResults, value: nowRef.current.value}));
                 dispatch(setResult({result: true}));

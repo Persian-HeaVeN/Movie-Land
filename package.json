@@ -1,7 +1,7 @@
 {
   "name": "movie-land",
   "version": "0.1.0",
-  "homepage": "https://Persian-HeaVeN.github.io/Movie-Land",
+  "homepage": "https://persian-heaven.github.io/Movie-Land",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
