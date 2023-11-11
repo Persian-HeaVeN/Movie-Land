@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { apiKey } from '../App';
 import OwlCarousel from 'react-owl-carousel';
 import Axios from 'axios';
-import { faListUl as listIcon, faSearch as searchIcon, faHome as homeIcon } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as heartIcon , faSearch as searchIcon, faHome as homeIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch } from 'react-redux';
 import { clearList, setList, setResult } from './store';
@@ -88,9 +88,9 @@ function Nav() {
                                 <FontAwesomeIcon style={{width:"fit-content", fontSize:"1.5rem"}} icon={homeIcon} />
                                 <h3 className="me-3" style={{width:"fit-content"}}>Main</h3>
                             </div>
-                            <div className="d-inline-flex align-items-center mouse-pointer hover-anim me-lg-5">
-                                <h3 className="me-3" style={{width:"fit-content"}}>Watchlist</h3>
-                                <FontAwesomeIcon style={{width:"fit-content", fontSize:"1.5rem"}} icon={listIcon} />
+                            <div onClick={()=>{navigateTo("/favorites")}} className="d-inline-flex align-items-center mouse-pointer hover-anim me-lg-5">
+                                <h3 className="me-3" style={{width:"fit-content"}}>Favorites</h3>
+                                <FontAwesomeIcon style={{width:"fit-content", fontSize:"1.5rem"}} icon={heartIcon} />
                             </div>
                         </div>
                     </div>
@@ -112,9 +112,9 @@ function Nav() {
                             <h1 className="text-start pb-2 ms-lg-5 no-select">Looking for a movie ?</h1>
                         </div>
                         <div className="col-6 d-grid justify-content-end">
-                            <div className="d-inline-flex align-items-center mouse-pointer hover-anim me-lg-5">
-                                <h3 className="me-3" style={{width:"fit-content"}}>Watchlist</h3>
-                                <FontAwesomeIcon style={{width:"fit-content", fontSize:"1.5rem"}} icon={listIcon} />
+                            <div onClick={()=>{navigateTo("/favorites")}} className="d-inline-flex align-items-center mouse-pointer hover-anim me-lg-5">
+                                <h3 className="me-3" style={{width:"fit-content"}}>Favorites</h3>
+                                <FontAwesomeIcon style={{width:"fit-content", fontSize:"1.5rem"}} icon={heartIcon} />
                             </div>
                             <div onClick={()=>{navigateTo("/")}} style={{direction:"rtl"}} className="d-inline-flex align-items-center mouse-pointer hover-anim me-lg-5">
                                 <FontAwesomeIcon style={{width:"fit-content", fontSize:"1.5rem"}} icon={homeIcon} />

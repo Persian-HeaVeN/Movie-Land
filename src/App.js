@@ -9,6 +9,7 @@ import Home from './pages/home';
 import Nav from './components/nav';
 import { Provider } from 'react-redux';
 import { store } from './components/store';
+import { Favorites } from './pages/favorites';
 
 export const apiKey = "38a6fdde";
 
@@ -19,6 +20,7 @@ function App() {
         <Nav />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/favorites" element={<Favorites />} />
         </Routes>
       </Router>
     </Provider>

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Axios from 'axios';
 import { apiKey } from '../App';
-import { faFilm as filmIcon, faClose as closeIcon } from '@fortawesome/free-solid-svg-icons';
+import { faFilm as filmIcon, faClose as closeIcon, faHeart as heartIcon, faHeartCirclePlus as heartPlusIcon, faHeartCircleMinus as heartMinusIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from "react-bootstrap/Pagination"
 import { setList, setResult } from '../components/store';
 import Modal from "react-bootstrap/Modal"
+import { isFavorite, removeFavorite, setFavorite } from '../components/favorites';
 
 
 function Home() {
@@ -115,6 +116,12 @@ function Home() {
         }
     }
 
+    const [seed, setSeed] = useState(1);
+
+    function refreshFavoriteIcon() {
+        setSeed(Math.random());
+    }
+
     /*
         Actors: "Cauã Reymond, Humberto Martins, Sophie Charlotte"
         Awards: "1 win & 16 nominations"
@@ -178,17 +185,16 @@ function Home() {
                     <p> <strong>Actors:</strong> {detailModal.datas.Actors} </p>
                     <p> <strong>Plot:</strong> {detailModal.datas.Plot}</p>
                 </div>
-                
             </Modal.Body>
             <Modal.Footer>
-                
+                <FontAwesomeIcon key={seed} onClick={()=>{ isFavorite(detailModal.datas.imdbID) === true ? removeFavorite(detailModal.datas.imdbID) : setFavorite(detailModal.datas) ; refreshFavoriteIcon() }} style={{fontSize:"2rem", color:"red"}} className="mx-auto hover-anim" icon={ isFavorite(detailModal.datas.imdbID) === true ? heartMinusIcon : heartPlusIcon } />
             </Modal.Footer>
         </Modal>}
 
         <div className="fulid-container pt-5 px-5" style={{backgroundColor:"#cccccc"}}>
 
             {(listSelector.list.length === 0 && listSelector.haveResult === true ) && <div className="d-grid justify-content-center no-data-icon" style={{opacity:"0.2", fontWeight:"800", fontSize:"2vh"}}>
-                <FontAwesomeIcon style={{fontSize:"15vh"}} icon={filmIcon} />
+                <FontAwesomeIcon style={{fontSize:"15vh", margin:"auto"}} icon={filmIcon} />
                 <p className="text-center">Nothing to show</p>
             </div>}
 
@@ -220,7 +226,7 @@ function Home() {
             </div>}
 
             {(listSelector.haveResult === false) && <div className="d-grid justify-content-center no-data-icon" style={{opacity:"0.2", fontWeight:"800", fontSize:"2vh"}}>
-                <FontAwesomeIcon style={{fontSize:"15vh"}} icon={closeIcon} />
+                <FontAwesomeIcon style={{fontSize:"15vh", margin:"auto"}} icon={closeIcon} />
                 <p className="text-center">Not Found !</p>
             </div>}
 
