@@ -1,7 +1,6 @@
 
 * {
     transition: 0.2s;
-    font-family: cursive, 'Times New Roman', Times, serif;
 }
 
 body {
@@ -252,6 +251,9 @@ body {
     }
     .nav-bg img {
         height: 260px;
+    }
+    * {
+        font-family: cursive, 'Times New Roman', Times, serif;
     }
 }
 
