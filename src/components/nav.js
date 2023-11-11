@@ -26,7 +26,13 @@ function Nav() {
 
     function getRandomInt(max) {
         return Math.floor(Math.random() * max);
-      }
+    }
+
+    const [seed, setSeed] = useState(1);
+
+    function refreshNavBgMovies() {
+        setSeed(Math.random());
+    }
 
     const [movieList, setMovieList] = useState([]);
 
@@ -35,7 +41,7 @@ function Nav() {
     useEffect(()=>{
          Axios.get(`https://www.omdbapi.com/?s=${randomNames[getRandomInt(5)]}&apikey=${apiKey}`).then((res) => {
             setMovieList(res.data.Search);
-            console.log(res.data.Search);
+            refreshNavBgMovies();
         })
       }, [])
 
@@ -128,7 +134,7 @@ function Nav() {
 
                 </div>
 
-                <div className='nav-bg'>
+                <div key={seed} className='nav-bg'>
                     <OwlCarousel className="owl-theme" {...crouselOptions} >
                         {movieList.map((data, index) => {
                             return (
