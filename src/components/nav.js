@@ -89,7 +89,7 @@ function Nav() {
                                 <FontAwesomeIcon style={{fontSize:"1.5rem"}} icon={homeIcon} />
                                 <h3 className="me-3">Main</h3>
                             </div>
-                            <div onClick={()=>{navigateTo("/favorites")}} className="d-inline-flex align-items-center mouse-pointer hover-anim me-lg-5">
+                            <div onClick={()=>{navigateTo("/Movie-Land/favorites")}} className="d-inline-flex align-items-center mouse-pointer hover-anim me-lg-5">
                                 <h3 className="me-3">Favorites</h3>
                                 <FontAwesomeIcon style={{fontSize:"1.5rem"}} icon={heartIcon} />
                             </div>
@@ -113,7 +113,7 @@ function Nav() {
                             <h1 className="text-start pb-2 ms-lg-5 no-select">Looking for a movie ?</h1>
                         </div>
                         <div className="col-6 d-grid justify-content-end">
-                            <div onClick={()=>{navigateTo("/favorites")}} className="d-inline-flex align-items-center mouse-pointer hover-anim me-lg-5">
+                            <div onClick={()=>{navigateTo("/Movie-Land/favorites")}} className="d-inline-flex align-items-center mouse-pointer hover-anim me-lg-5">
                                 <h3 className="me-3" style={{width:"fit-content"}}>Favorites</h3>
                                 <FontAwesomeIcon style={{width:"fit-content", fontSize:"1.5rem"}} icon={heartIcon} />
                             </div>

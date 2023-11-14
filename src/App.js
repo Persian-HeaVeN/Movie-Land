@@ -20,7 +20,7 @@ function App() {
         <Nav />
         <Routes>
           <Route path="/Movie-Land" element={<Home />} />
-          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/Movie-Land/favorites" element={<Favorites />} />
         </Routes>
       </Router>
     </Provider>
