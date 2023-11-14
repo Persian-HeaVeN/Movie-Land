@@ -1,4 +1,6 @@
 # Site for searching movies
+this site is using omdb API for searching movies, some features:
+* test
 
 # Getting Started with Create React App
 
