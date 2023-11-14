@@ -1,4 +1,4 @@
-## Site for searching movies
+# Site for searching movies
 
 # Getting Started with Create React App
 
