@@ -16,13 +16,21 @@ export const apiKey = "38a6fdde";
 function App() {
   return (
     <Provider store={store}>
+
       <Router>
+
         <Nav />
+
         <Routes>
+
           <Route path="/Movie-Land" element={<Home />} />
+
           <Route path="/Movie-Land/favorites" element={<Favorites />} />
+
         </Routes>
+
       </Router>
+
     </Provider>
   )
 }
